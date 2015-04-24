@@ -1,0 +1,19 @@
+---
+aws_region: 'us-west-2'
+keypair_name: 'sjkey'
+keypair_dir: '/Users/sjj/pems'
+vpc_id: 'vpc-9bb40cfe'
+subnet_id: 'subnet-a3f640d4'
+availability_zone: 'us-west-2a'
+security_group_name: 'sshonly-sjhome'
+my_public_ip: '124.168.156.202'
+source_ami: 'ami-81d092b1'
+instance_type: 't2.micro'
+tmp_vol_dev: '/dev/xvdz'
+username: 'root'
+pkgs:
+- epel-release
+- cloud-init
+- redhat-lsb
+- cloud-utils-growpart
+- dracut-modules-growroot
