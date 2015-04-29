@@ -1,0 +1,21 @@
+# to test an AMI using cloud formation:
+
+aws s3 cp test_ami.json s3://cf-templates.dersify.info
+
+aws cloudformation create-stack \
+ --stack-name AMItest \
+ --template-url \
+ https://s3-us-west-2.amazonaws.com/cf-templates.dersify.info/test_ami.json \
+ --parameters \
+ ParameterKey=KeyName,ParameterValue=sjkey,UsePreviousValue=false \
+ ParameterKey=InstanceType,ParameterValue=t2.micro,UsePreviousValue=false \
+ ParameterKey=AMItestSubnetID,ParameterValue=subnet-a3f640d4,UsePreviousValue=false \
+ ParameterKey=MyVpcID,ParameterValue=vpc-9bb40cfe,UsePreviousValue=false \
+ ParameterKey=VolumeSize,ParameterValue=20,UsePreviousValue=false \
+ ParameterKey=SSHLocation,ParameterValue=131.203.247.184/32,UsePreviousValue=false \
+ ParameterKey=AMIimageID,ParameterValue=ami-ab8fb89b
+
+aws cloudformation describe-stacks --stack-name AMItest
+
+aws cloudformation delete-stack --stack-name AMItest
+
