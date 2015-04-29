@@ -6,9 +6,13 @@ vpc_id: 'vpc-9bb40cfe'
 subnet_id: 'subnet-a3f640d4'
 availability_zone: 'us-west-2a'
 security_group_name: 'sshonly-sjhome'
+hostname: 'centoser'
 my_public_ip: '124.168.156.202'
 source_ami: 'ami-81d092b1'
+target_ami_name: 'CBIG-CentOS-6.5-x86_64-base'
+target_ami_desc: 'CBIG base CentOS 6.5 x86_64 image created from official CentOS release'
 instance_type: 't2.micro'
+src_root_dev: '/dev/xvda'
 tmp_vol_dev: '/dev/xvdz'
 username: 'root'
 pkgs:
@@ -17,3 +21,10 @@ pkgs:
 - redhat-lsb
 - cloud-utils-growpart
 - dracut-modules-growroot
+copy_files:
+- path: '/etc/selinux/config'
+  owner: 'root:root'
+  mode: '0640'
+- path: '/etc/cloud/cloud.cfg'
+  owner: 'root:root'
+  mode: '0664'
