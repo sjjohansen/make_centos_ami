@@ -77,6 +77,27 @@
 
     "AMItester01": {
       "Type": "AWS::EC2::Instance",
+      "Metadata" : {
+        "AWS::CloudFormation::Init" : {
+          "config" : {
+            "files" : {
+              "/var/tmp/testfile" : {
+                "content" : {
+                  "Fn::Join" : ["",
+                    [
+                      "line 1: ", { "Ref" : "AWS::StackId" }, "\n",
+                      "line 2: end of file\n"
+                    ]
+                  ]
+                },
+                "mode"    : "000644",
+                "owner"   : "ec2-user",
+                "group"   : "ec2-user"
+              }
+            }
+          }
+        }
+      },
       "Properties": {
         "Tags" : [
             {"Key" : "Name", "Value" : "amitester01"}
@@ -94,7 +115,32 @@
               "VolumeSize" : { "Ref" : "VolumeSize" }
             }
           }
-        ]
+        ],
+        "UserData" : {
+          "Fn::Base64" : {
+            "Fn::Join" : ["",
+              [
+                "#!/bin/bash\n\n",
+                "/opt/aws/bin/cfn-init -s ", { "Ref" : "AWS::StackId" }, " -r AMItester01 ",
+                "  --region ", { "Ref" : "AWS::Region" }, "\n",
+                "/opt/aws/bin/cfn-signal -e $? '", { "Ref" : "WaitHandle" }, "'\n"
+              ]
+            ]
+          }
+        }
+      }
+    },
+
+    "WaitHandle" : {
+      "Type" : "AWS::CloudFormation::WaitConditionHandle"
+    },
+
+    "WaitCondition" : {
+      "Type" : "AWS::CloudFormation::WaitCondition",
+      "DependsOn" : "AMItester01",
+      "Properties" : {
+        "Handle" : {"Ref" : "WaitHandle"},
+        "Timeout" : "600"
       }
     },
 
