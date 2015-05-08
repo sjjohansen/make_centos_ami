@@ -21,6 +21,9 @@ pkgs:
 - redhat-lsb
 - cloud-utils-growpart
 - dracut-modules-growroot
+- wget
+- unzip
+- https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.amzn1.noarch.rpm
 copy_files:
 - path: '/etc/selinux/config'
   owner: 'root:root'

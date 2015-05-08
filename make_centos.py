@@ -20,6 +20,7 @@ import clud.ssh.initramfs
 import clud.ssh.fileops
 import clud.ssh.dev
 import clud.ssh.util
+import clud.ssh.awstools
 
 def get_config(yfile):
   required_keys = ['aws_region',
@@ -178,6 +179,8 @@ def main():
 
   src_prefix = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'files')
   copy_to_source_ec2(instance, yconfig, src_prefix, keypair_path)
+
+  clud.ssh.awstools.add(instance.ip_address, yconfig['username'], keypair_path)
 
   clud.ssh.dev.rawcopy(instance.ip_address, yconfig['username'], keypair_path, 
 	  yconfig['src_root_dev'], yconfig['tmp_vol_dev'])
